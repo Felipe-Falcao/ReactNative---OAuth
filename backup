@@ -1,0 +1,71 @@
+
+import React, { Component } from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
+import { authorize, refresh, revoke, prefetchConfiguration } from 'react-native-app-auth';
+import AuthProvider from './src/Auth.js'
+
+const config = {
+  // warmAndPrefetchChrome: true,
+  issuer: 'https://accounts.google.com',
+  clientId: '700126173685-ri2hce8g5031m4hdfrhl2uq4blb8sctj.apps.googleusercontent.com',
+  redirectUrl: 'com.googleusercontent.apps.700126173685-ri2hce8g5031m4hdfrhl2uq4blb8sctj:/oauth2redirect/google',
+  scopes: ['openid', 'profile'],
+};
+
+const defaultAuthState = {
+  hasLoggedInOnce: false,
+  provider: '',
+  accessToken: '',
+  accessTokenExpirationDate: '',
+  refreshToken: ''
+};
+
+export default class App extends Component {
+  state = {
+    ...defaultAuthState
+  }
+
+  getGoogle = async () => {
+    try {
+      const authState = await authorize(config)
+      console.log(authState)
+      this.setState({ token: authState })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  refreshGoogle = async () => {
+    const authState = this.state.token
+    try {
+      const refreshedState = await refresh(config, {
+        refreshToken: authState.refreshToken
+      });
+      this.setState({ token: refreshedState })
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+  render() {
+    return (
+      <AuthProvider>
+        <TouchableOpacity onPress={this.getGoogle}>
+          <Text>Google</Text>
+        </TouchableOpacity>
+        <Text>Auth: {this.state.token}</Text>
+        <TouchableOpacity onPress={this.refreshGoogle}>
+          <Text>Refresh</Text>
+        </TouchableOpacity>
+      </AuthProvider>
+    );
+  }
+}
