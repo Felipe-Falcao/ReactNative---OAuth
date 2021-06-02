@@ -1,17 +1,13 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { UIManager, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { authorize, refresh, revoke, prefetchConfiguration } from 'react-native-app-auth';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
   Text,
-  Button,
   View,
   TouchableOpacity,
 } from 'react-native';
 import AuthContainer from './src/Auth'
+import { CLIENT_ID } from '@env'
 
 // const configs = {
 //   google: {
@@ -53,7 +49,7 @@ const configs = {
   },
   google: {
     issuer: 'https://accounts.google.com',
-    clientId: '1080177569369-481stlb5cl855jsvuhm585nc1ai7tdmm.apps.googleusercontent.com',
+    clientId: CLIENT_ID + '.apps.googleusercontent.com',
     // redirectUrl: 'com.googleusercontent.apps.700126173685-ri2hce8g5031m4hdfrhl2uq4blb8sctj:/oauth2redirect/google',
     // redirectUrl: 'urn:ietf:wg:oauth:2.0:oob',
     redirectUrl: 'com.rnauth:/oauth2redirect',
