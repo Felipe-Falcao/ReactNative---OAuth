@@ -10,10 +10,15 @@
 
 - Create a project or join an existing one
 - Credentials > Create Credentials
+
 > AppType: ```Android```
+
 > You can find package name within the  ```/android/app/src/main/AndroidManifest.xml``` of your project.
+
 > For the SHA-1 signing certificate, tap from the root of your project ```keytool -keystore ./android/app/debug.keystore -list -v```. You can find the password in your ```app/build.gradle```. By default the password is ```android```.
+
 > You can also find your SHA-1 certiticate on ```/android```, tapping ```gradlew signingReport```.
+
 - Create and copy the ClientID.
 
 ### 1.3 Create a react-native project or join an existing one
