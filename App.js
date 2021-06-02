@@ -53,10 +53,17 @@ const configs = {
   },
   google: {
     issuer: 'https://accounts.google.com',
-    clientId: '700126173685-ri2hce8g5031m4hdfrhl2uq4blb8sctj.apps.googleusercontent.com',
-    redirectUrl: 'com.googleusercontent.apps.700126173685-ri2hce8g5031m4hdfrhl2uq4blb8sctj:/oauth2redirect/google',
-    scopes: ['openid', 'profile'],
+    clientId: '1080177569369-481stlb5cl855jsvuhm585nc1ai7tdmm.apps.googleusercontent.com',
+    // redirectUrl: 'com.googleusercontent.apps.700126173685-ri2hce8g5031m4hdfrhl2uq4blb8sctj:/oauth2redirect/google',
+    // redirectUrl: 'urn:ietf:wg:oauth:2.0:oob',
+    redirectUrl: 'com.rnauth:/oauth2redirect',
+    scopes: ['openid', 'profile', 'email'],
     // warmAndPrefetchChrome: true,
+    // serviceConfiguration: {
+    //   authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
+    //   tokenEndpoint: 'https://oauth2.googleapis.com/token',
+    //   revocationEndpoint: 'https://www.googleapis.com/oauth2/v1/certs'
+    // }
   }
 };
 

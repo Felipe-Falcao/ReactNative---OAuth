@@ -132,7 +132,7 @@ android {
 
     defaultConfig {
         manifestPlaceholders = [
-            appAuthRedirectScheme: 'io.identityserver.demo'
+            appAuthRedirectScheme: 'com.rnauth'
         ]
         applicationId "com.rnauth"
         minSdkVersion rootProject.ext.minSdkVersion
