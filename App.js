@@ -9,6 +9,7 @@ import {
 import AuthContainer from './src/Auth'
 import { GOOGLE_CLIENT_ID, FACE_CLIENT_ID } from '@env'
 import { Profile, LoginManager, LoginButton, AccessToken } from 'react-native-fbsdk-next';
+import axios from 'axios'
 
 // const configs = {
 //   google: {
@@ -56,12 +57,13 @@ const configs = {
     redirectUrl: 'com.rnauth:/oauth2redirect',
     scopes: ['openid', 'profile', 'email'],
     // warmAndPrefetchChrome: true,
-    // serviceConfiguration: {
-    //   authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
-    //   tokenEndpoint: 'https://oauth2.googleapis.com/token',
-    //   revocationEndpoint: 'https://www.googleapis.com/oauth2/v1/certs'
-    // }
+    serviceConfiguration: {
+      authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
+      tokenEndpoint: 'https://oauth2.googleapis.com/token',
+      revocationEndpoint: 'https://www.googleapis.com/oauth2/v1/certs'
+    }
   },
+  //https://www.googleapis.com/oauth2/v1/userinfo?access_token=
 };
 
 
@@ -70,11 +72,37 @@ const defaultAuthState = {
   provider: '',
   accessToken: '',
   accessTokenExpirationDate: '',
-  refreshToken: ''
+  refreshToken: '',
+  authorizeAdditionalParameters: '',
 };
 
+const userInfo = {
+  userEmail: '',
+  userName: '',
+  userPicture: '',
+}
+
 const App = () => {
-  const [authState, setAuthState] = useState(defaultAuthState);
+  const [authState, setAuthState] = useState(defaultAuthState)
+  const [userInfo, setUserInfo] = useState(userInfo)
+
+  function getUser() {
+    axios.get('https://www.googleapis.com/oauth2/v1/userinfo', {
+      params: {
+        access_token: authState.accessToken
+      }
+    })
+      .then(function (response) {
+        setUserInfo({
+          userEmail: response.data.email,
+          userName: response.data.name,
+          userPicture: response.data.picture
+        })
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
   React.useEffect(() => {
     prefetchConfiguration({
@@ -152,6 +180,7 @@ const App = () => {
     <AuthContainer>
       {!!authState.accessToken ? (
         <View>
+          {getUser()}
           <Text style={{ backgroundColor: '#CECECE' }}>accessToken</Text>
           <Text>{authState.accessToken}</Text>
           <Text style={{ backgroundColor: '#CECECE' }}>accessTokenExpirationDate</Text>
@@ -159,7 +188,11 @@ const App = () => {
           <Text style={{ backgroundColor: '#CECECE' }}>refreshToken</Text>
           <Text>{authState.refreshToken}</Text>
           <Text style={{ backgroundColor: '#CECECE' }}>scopes</Text>
-          <Text>{authState.scopes.join(', ')}</Text>
+          {authState.scopes.map((s, index) => (<Text key={index}>{s}</Text>))}
+          <Text style={{ backgroundColor: '#CECECE' }}>UserInfo</Text>
+          <Text>{userInfo.userName}</Text>
+          <Text>{userInfo.userEmail}</Text>
+          <Text>{userInfo.userPicture}</Text>
         </View>
       ) : (
         <Text>{authState.hasLoggedInOnce ? 'Goodbye.' : 'Hello, stranger.'}</Text>
@@ -182,7 +215,7 @@ const App = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={{ backgroundColor: 'green', padding: 10, alignItems: 'center', margin: 10 }}
-              onPress={() => handleAuthorize('google')}
+              onPress={() => { handleAuthorize('google') }}
             >
               <Text style={{ color: 'white' }}>Google</Text>
             </TouchableOpacity>
