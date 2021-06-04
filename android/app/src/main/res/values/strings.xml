@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RNAuth</string>
+    <string name="facebook_app_id">2529786257317328</string>
 </resources>

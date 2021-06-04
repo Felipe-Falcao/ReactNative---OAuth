@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import AuthContainer from './src/Auth'
-import { CLIENT_ID } from '@env'
+import { GOOGLE_CLIENT_ID, FACE_CLIENT_ID } from '@env'
+import { Profile, LoginManager, LoginButton, AccessToken } from 'react-native-fbsdk-next';
 
 // const configs = {
 //   google: {
@@ -49,7 +50,7 @@ const configs = {
   },
   google: {
     issuer: 'https://accounts.google.com',
-    clientId: CLIENT_ID + '.apps.googleusercontent.com',
+    clientId: GOOGLE_CLIENT_ID + '.apps.googleusercontent.com',
     // redirectUrl: 'com.googleusercontent.apps.700126173685-ri2hce8g5031m4hdfrhl2uq4blb8sctj:/oauth2redirect/google',
     // redirectUrl: 'urn:ietf:wg:oauth:2.0:oob',
     redirectUrl: 'com.rnauth:/oauth2redirect',
@@ -60,7 +61,7 @@ const configs = {
     //   tokenEndpoint: 'https://oauth2.googleapis.com/token',
     //   revocationEndpoint: 'https://www.googleapis.com/oauth2/v1/certs'
     // }
-  }
+  },
 };
 
 
@@ -203,6 +204,69 @@ const App = () => {
             <Text>Revoke</Text>
           </TouchableOpacity>
         ) : null}
+        {/* <LoginButton
+          onLoginFinished={
+            (error, result) => {
+              if (error) {
+                console.log("login has error: " + result.error);
+              } else if (result.isCancelled) {
+                console.log("login is cancelled.");
+              } else {
+                AccessToken.getCurrentAccessToken().then(
+                  (data) => {
+                    console.log(data.accessToken.toString() + '\n')
+                  }
+                )
+
+                const currentProfile = Profile.getCurrentProfile().then(
+                  function (currentProfile) {
+                    if (currentProfile) {
+                      console.log("The current logged user is: " +
+                        currentProfile.name
+                        + ". His profile id is: " +
+                        currentProfile.userID
+                      );
+                    }
+                  }
+                );
+              }
+            }
+          }
+          onLogoutFinished={() => console.log("logout.")} /> */}
+        <TouchableOpacity
+          style={{ backgroundColor: '#CECECE', padding: 10, alignItems: 'center', margin: 10 }}
+          onPress={() => {
+            LoginManager.logInWithPermissions(["public_profile"]).then(
+              function (result) {
+                if (result.isCancelled) {
+                  console.log("Login cancelled");
+                } else {
+                  Profile.getCurrentProfile().then(
+                    function (currentProfile) {
+                      if (currentProfile) {
+                        console.log("The current logged user is: " +
+                          currentProfile.name
+                          + ". His profile id is: " +
+                          currentProfile.userID
+                        );
+                      }
+                    }
+                  );
+                  console.log(
+                    "Login success with permissions: " +
+                    result.grantedPermissions.toString()
+                  );
+                }
+              },
+              function (error) {
+                console.log("Login fail with error: " + error);
+              }
+            );
+
+          }}
+        >
+          <Text>Facebook</Text>
+        </TouchableOpacity>
       </View>
     </AuthContainer>
   );

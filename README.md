@@ -1,5 +1,5 @@
 # # ReactNative---OAuth
-## 1. Setting up Android
+## 1. Google: Setting up Android
 ### 1.1 Features
 
 - Configure a project on [Google Cloud Platform][gcloud] and configure a new credential to Android
@@ -43,10 +43,24 @@ const config = {
 ```
 - See an [example]
 
-## 2. Support: 
+## 2. Facebook: Setting up Android
+keytool -exportcert -alias androiddebugkey -keystore ./android/app/debug.keystore | openssl sha1 -binary | openssl base64
+https://code.google.com/archive/p/openssl-for-windows/downloads
+keytool -exportcert -alias androiddebugkey -keystore ./android/app/debug.keystore | "C:\openssl\bin\openssl.exe" sha1 -binary | "C:\openssl\bin\openssl.exe" base64
+
+
+Salve as alterações. Caso apareça um alerta sobre o nome do pacote escolha a opção Usar este nome de pacote. Esse alerta aparece quando seu aplicativo ainda não está disponível no Google Play.
+
+## 3. Support: 
+### Google
 - https://chaim-zalmy-muskal.medium.com/hi-6d328bbd550f
 - https://github.com/FormidableLabs/react-native-app-auth
 - https://developers.google.com/android/guides/client-auth?authuser=1#using_gradles_signing_report
+
+### Facebook
+- https://developers.facebook.com/docs/android/getting-started/
+- https://medium.com/reactbrasil/instalando-o-react-native-fbsdk-do-jeito-certo-9f0fada5be4
+- https://www.npmjs.com/package/react-native-fbsdk-next
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
     
