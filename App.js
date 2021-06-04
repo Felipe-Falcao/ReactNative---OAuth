@@ -76,7 +76,7 @@ const defaultAuthState = {
   authorizeAdditionalParameters: '',
 };
 
-const userInfo = {
+const defaultUserInfo = {
   userEmail: '',
   userName: '',
   userPicture: '',
@@ -84,7 +84,7 @@ const userInfo = {
 
 const App = () => {
   const [authState, setAuthState] = useState(defaultAuthState)
-  const [userInfo, setUserInfo] = useState(userInfo)
+  const [userInfo, setUserInfo] = useState(defaultUserInfo)
 
   function getUser() {
     axios.get('https://www.googleapis.com/oauth2/v1/userinfo', {
@@ -96,11 +96,12 @@ const App = () => {
         setUserInfo({
           userEmail: response.data.email,
           userName: response.data.name,
-          userPicture: response.data.picture
+          userPicture: response.data.picture,
         })
       })
       .catch(function (error) {
-        console.log(error);
+        // console.log(error);
+        null
       });
   }
 
@@ -121,12 +122,13 @@ const App = () => {
           hasLoggedInOnce: true,
           provider: provider,
           ...newAuthState
-        });
+        })
+
       } catch (error) {
         Alert.alert('Falha ao realizar o Login', error.message);
       }
     },
-    [authState]
+    [authState], userInfo.userEmail == '' ? getUser() : false
   );
 
   const handleRefresh = useCallback(async () => {
@@ -161,6 +163,8 @@ const App = () => {
         accessTokenExpirationDate: '',
         refreshToken: ''
       });
+
+      setUserInfo({ ...defaultUserInfo })
     } catch (error) {
       Alert.alert('Failed to revoke token', error.message);
     }
@@ -180,7 +184,6 @@ const App = () => {
     <AuthContainer>
       {!!authState.accessToken ? (
         <View>
-          {getUser()}
           <Text style={{ backgroundColor: '#CECECE' }}>accessToken</Text>
           <Text>{authState.accessToken}</Text>
           <Text style={{ backgroundColor: '#CECECE' }}>accessTokenExpirationDate</Text>
