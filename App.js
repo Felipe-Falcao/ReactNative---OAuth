@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import AuthContainer from './src/Auth'
-import { GOOGLE_CLIENT_ID, FACE_CLIENT_ID } from '@env'
+import { GOOGLE_CLIENT_ID } from '@env'
 import { Profile, LoginManager, LoginButton, AccessToken } from 'react-native-fbsdk-next';
 import axios from 'axios'
 
@@ -51,7 +51,7 @@ const configs = {
   },
   google: {
     issuer: 'https://accounts.google.com',
-    clientId: GOOGLE_CLIENT_ID + '.apps.googleusercontent.com',
+    clientId: GOOGLE_CLIENT_ID,
     // redirectUrl: 'com.googleusercontent.apps.700126173685-ri2hce8g5031m4hdfrhl2uq4blb8sctj:/oauth2redirect/google',
     // redirectUrl: 'urn:ietf:wg:oauth:2.0:oob',
     redirectUrl: 'com.rnauth:/oauth2redirect',

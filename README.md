@@ -14,6 +14,9 @@
   - You can find package name within the  ```/android/app/src/main/AndroidManifest.xml``` of your project.
   - For the SHA-1 signing certificate, tap from the root of your project ```keytool -keystore ./android/app/debug.keystore -list -v```. You can find the password in your ```app/build.gradle```. By default the password is ```android```.
   - You can also find your SHA-1 certiticate on ```/android```, tapping ```gradlew signingReport```.
+  - If you still having trouble, see ```https://www.youtube.com/watch?v=0FTxFr5I2rs``` and create your own key.
+    - Create: ```keytool -genkey -v -keystore mykeystore.keystore -alias mykeyalias -keyalg RSA -keysize 2048 -validity 100000 ```
+    - See: ```keytool -keystore ./android/app/mykeystore.keystore -list -v -alias mykeyalias```
 
 - Create and copy the ClientID.
 
