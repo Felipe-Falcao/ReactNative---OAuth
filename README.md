@@ -50,7 +50,7 @@ const config = {
 
 ### 2.1 Features
 
-- Create a new App on [Facebook for Developers]][facedev] and configure a new credential to Android
+- Create a new App on [Facebook for Developers][facedev] and configure a new credential to Android
 - Configure a react-native project or join an existing one
 - Put some code
 
