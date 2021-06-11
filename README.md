@@ -1,6 +1,6 @@
 # # ReactNative---OAuth
 ## 1. Google: Setting up Android
-### 1.1 Features
+### 1.1 Step by step
 
 - Configure a project on [Google Cloud Platform][gcloud] and configure a new credential to Android
 - Create a react-native project or join an existing one
@@ -48,7 +48,7 @@ const config = {
 
 ## 2. Facebook: Setting up Android
 
-### 2.1 Features
+### 2.1 Step by step
 
 - Create a new App on [Facebook for Developers][facedev] and configure a new credential to Android
 - Configure a react-native project or join an existing one
