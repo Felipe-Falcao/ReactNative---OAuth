@@ -270,7 +270,7 @@ const App = () => {
           }
           onLogoutFinished={() => console.log("logout.")} /> */}
         <TouchableOpacity
-          style={{ backgroundColor: '#CECECE', padding: 10, alignItems: 'center', margin: 10 }}
+          style={{ backgroundColor: 'blue', padding: 10, alignItems: 'center', margin: 10 }}
           onPress={() => {
             LoginManager.logInWithPermissions(["public_profile"]).then(
               function (result) {
@@ -301,7 +301,7 @@ const App = () => {
 
           }}
         >
-          <Text>Facebook</Text>
+          <Text style={{ color: 'white' }}>Facebook</Text>
         </TouchableOpacity>
       </View>
     </AuthContainer>

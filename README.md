@@ -47,12 +47,38 @@ const config = {
 - See an [example]
 
 ## 2. Facebook: Setting up Android
-keytool -exportcert -alias androiddebugkey -keystore ./android/app/debug.keystore | openssl sha1 -binary | openssl base64
-https://code.google.com/archive/p/openssl-for-windows/downloads
-keytool -exportcert -alias androiddebugkey -keystore ./android/app/debug.keystore | "C:\openssl\bin\openssl.exe" sha1 -binary | "C:\openssl\bin\openssl.exe" base64
 
+### 2.1 Features
 
-Salve as alterações. Caso apareça um alerta sobre o nome do pacote escolha a opção Usar este nome de pacote. Esse alerta aparece quando seu aplicativo ainda não está disponível no Google Play.
+- Create a new App on [Facebook for Developers]][facedev] and configure a new credential to Android
+- Configure a react-native project or join an existing one
+- Put some code
+
+### 2.2 Configuring a project
+
+- Create a new App ```Consumer > App_name > Create App```
+- Add a platform at ```Configurations > Basic > Add Platform```
+  - Select ```Android```.
+  - Put the package name found at ```/android/app/src/main/AndroidManifest.xml``` path in your project.
+  - Put your app Hash Key
+    - To generate this key, at the project source path type the command ```keytool -keystore ./android/app/debug.keystore -exportcert -alias androiddebugkey | openssl sha1 -binary | openssl base64```
+    - Probably you will have some throuble with openssl
+    - To fix it, download and extract [OpenSSL for Windows][openssl] and run ```keytool -exportcert -alias androiddebugkey -keystore ./android/app/debug.keystore | "<PATH>\openssl\bin\openssl.exe" sha1 -binary | "<PATH>\openssl\bin\openssl.exe" base64```
+  - Change ```Single Login``` to YES, the rest NO.
+  - Save Changes. If an alert about the package name appears, choose the option ```Use this package name```. This alert appears when your app is not yet available on Google Play.
+
+### 2.3 Configure a react-native project or join an existing one
+
+- Make sure you set up a Facebook app and updated the ```AndroidManifest.xml``` and ```strings.xml``` with Facebook app settings.
+  - At ```android/app/src/main/AndroidManifest.xml```
+    - Add ```<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>``` under ```<activity>``` tag.
+    - Make sure that you have the follow permission ```<uses-permission android:name="android.permission.INTERNET" />```.
+  - At ```android/app/src/main/res/values/strings.xml```
+    - Add ```<string name="facebook_app_id">FACEBOOK_APP_ID</string>```.
+
+### 2.4 Put some code
+
+- See [React-Native FBSDK-NEXT package][package] and follow the code steps.
 
 ## 3. Support: 
 ### Google
@@ -62,11 +88,14 @@ Salve as alterações. Caso apareça um alerta sobre o nome do pacote escolha a 
 
 ### Facebook
 - https://developers.facebook.com/docs/android/getting-started/
-- https://medium.com/reactbrasil/instalando-o-react-native-fbsdk-do-jeito-certo-9f0fada5be4
-- https://www.npmjs.com/package/react-native-fbsdk-next
+- How to configure on Facebook Developer: ```https://medium.com/reactbrasil/instalando-o-react-native-fbsdk-do-jeito-certo-9f0fada5be4```
+- Package to use: ```https://www.npmjs.com/package/react-native-fbsdk-next```
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
     
    [gcloud]: <https://console.cloud.google.com/apis/credentials>
    [redirect]: <https://github.com/openid/AppAuth-android#capturing-the-authorization-redirect>
    [example]: <https://github.com/FormidableLabs/react-native-app-auth/tree/main/Example>
+   [facedev]: <https://developers.facebook.com/>
+   [openssl]: <https://code.google.com/archive/p/openssl-for-windows/downloads>
+   [package]: <https://www.npmjs.com/package/react-native-fbsdk-next>
