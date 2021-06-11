@@ -2,6 +2,7 @@
 ## 1. Google: Setting up Android
 ### 1.1 Step by step
 
+- Used package [react-native-app-auth][packageGoogle]
 - Configure a project on [Google Cloud Platform][gcloud] and configure a new credential to Android
 - Create a react-native project or join an existing one
 - Configure the callback
@@ -50,6 +51,7 @@ const config = {
 
 ### 2.1 Step by step
 
+- Used package [react-native-fbsdk-next][package]
 - Create a new App on [Facebook for Developers][facedev] and configure a new credential to Android
 - Configure a react-native project or join an existing one
 - Put some code
@@ -101,3 +103,4 @@ const config = {
    [facedev]: <https://developers.facebook.com/>
    [openssl]: <https://code.google.com/archive/p/openssl-for-windows/downloads>
    [package]: <https://www.npmjs.com/package/react-native-fbsdk-next>
+   [packageGoogle]: <https://github.com/FormidableLabs/react-native-app-auth>
