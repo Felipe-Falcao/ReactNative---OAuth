@@ -54,8 +54,9 @@ const config = {
 - Configure a react-native project or join an existing one
 - Put some code
 
-### 2.2 Configuring a project
+### 2.2 Configuring a new App
 
+- Go to [Facebook for Developers][facedev]
 - Create a new App ```Consumer > App_name > Create App```
 - Add a platform at ```Configurations > Basic > Add Platform```
   - Select ```Android```.
@@ -69,6 +70,7 @@ const config = {
 
 ### 2.3 Configure a react-native project or join an existing one
 
+- At your React Native Project
 - Make sure you set up a Facebook app and updated the ```AndroidManifest.xml``` and ```strings.xml``` with Facebook app settings.
   - At ```android/app/src/main/AndroidManifest.xml```
     - Add ```<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>``` under ```<activity>``` tag.
