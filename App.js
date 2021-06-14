@@ -123,14 +123,25 @@ const App = () => {
 
   async function getFacebookUser() {
     const currentProfile = await Profile.getCurrentProfile()
-    setUserInfo({
-      userEmail: currentProfile.userID,
-      userName: currentProfile.name,
-      userPicture: currentProfile.imageURL,
-      userId: currentProfile.userID,
+    const response = await axios.get('https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=' + authState.accessToken, {
+      // params: {
+      //   access_token: authState.accessToken
+      // }
     })
+
+    if (response) {
+      setUserInfo({
+        userEmail: response.data.email,
+        userName: currentProfile.name,
+        userPicture: currentProfile.imageURL,
+        userId: currentProfile.userID,
+      })
+
+      console.log(response.data)
+    }
+
     if (currentProfile) {
-      console.log(currentProfile)
+      // console.log(currentProfile)
     }
   }
 
@@ -150,7 +161,6 @@ const App = () => {
           accessToken: accessToken.accessToken,
           accessTokenExpirationDate: accessToken.dataAccessExpirationTime,
         }))
-        getFacebookUser()
       }
     } catch (error) {
       console.log(error)
@@ -271,10 +281,15 @@ const App = () => {
           <Text style={{ backgroundColor: '#CECECE' }}>scopes</Text>
           {authState.scopes.map((s, index) => (<Text key={index}>{s}</Text>))}
           <Text style={{ backgroundColor: '#CECECE' }}>UserInfo</Text>
+
           <Text>{userInfo.userName}</Text>
           <Text>{userInfo.userEmail}</Text>
           <Text>{userInfo.userPicture}</Text>
           <Text>{userInfo.userId}</Text>
+          <TouchableOpacity
+            style={{ backgroundColor: '#CECECE', padding: 10, alignItems: 'center', margin: 10 }}
+            onPress={() => getFacebookUser()}
+          ><Text>Obter userInfo</Text></TouchableOpacity>
         </View>
       ) : (
         <Text>{authState.hasLoggedInOnce ? 'Goodbye.' : 'Hello, stranger.'}</Text>
