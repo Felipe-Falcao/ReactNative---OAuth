@@ -80,7 +80,7 @@ const config = {
   - At ```android/app/src/main/res/values/strings.xml```
     - Add ```<string name="facebook_app_id">FACEBOOK_APP_ID</string>```.
 
-### 2.4 Put some code
+### 2.4 Put some codes
 
 - See [React-Native FBSDK-NEXT package][package] and follow the code steps.
 
