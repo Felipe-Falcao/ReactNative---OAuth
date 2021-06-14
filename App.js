@@ -51,7 +51,7 @@ const configs = {
   },
   google: {
     issuer: 'https://accounts.google.com',
-    clientId: GOOGLE_CLIENT_ID,
+    clientId: GOOGLE_CLIENT_ID + '.apps.googleusercontent.com',
     // redirectUrl: 'com.googleusercontent.apps.700126173685-ri2hce8g5031m4hdfrhl2uq4blb8sctj:/oauth2redirect/google',
     // redirectUrl: 'urn:ietf:wg:oauth:2.0:oob',
     redirectUrl: 'com.rnauth:/oauth2redirect',
@@ -64,6 +64,12 @@ const configs = {
     }
   },
   //https://www.googleapis.com/oauth2/v1/userinfo?access_token=
+  facebook: {
+    issuer: 'https://www.facebook.com/v3.1/dialog/oauth/cliend_id',
+    clientId: '587286728918071',
+    redirectUrl: 'com.rnauth:/oauth2redirect',
+    scopes: ['email'],
+  }
 };
 
 
@@ -73,13 +79,14 @@ const defaultAuthState = {
   accessToken: '',
   accessTokenExpirationDate: '',
   refreshToken: '',
-  authorizeAdditionalParameters: '',
+  scopes: '',
 };
 
 const defaultUserInfo = {
   userEmail: '',
   userName: '',
   userPicture: '',
+  userId: '',
 }
 
 const App = () => {
@@ -97,7 +104,9 @@ const App = () => {
           userEmail: response.data.email,
           userName: response.data.name,
           userPicture: response.data.picture,
+          userId: response.data.id,
         })
+        console.log(response)
       })
       .catch(function (error) {
         // console.log(error);
@@ -112,6 +121,75 @@ const App = () => {
     });
   }, []);
 
+  async function getFacebookUser() {
+    const currentProfile = await Profile.getCurrentProfile()
+    setUserInfo({
+      userEmail: currentProfile.userID,
+      userName: currentProfile.name,
+      userPicture: currentProfile.imageURL,
+      userId: currentProfile.userID,
+    })
+    if (currentProfile) {
+      console.log(currentProfile)
+    }
+  }
+
+  const handleFacebookSignin = async () => {
+    try {
+      const result = await LoginManager.logInWithPermissions(['public_profile'])
+      const accessToken = await AccessToken.getCurrentAccessToken()
+      console.log(accessToken)
+      if (result.isCancelled) {
+        console.log('Login Cancelado')
+      } else {
+        setAuthState(current => ({
+          ...current,
+          // provider: accessToken.accessTokenSource,
+          provider: 'facebook',
+          scopes: accessToken.permissions,
+          accessToken: accessToken.accessToken,
+          accessTokenExpirationDate: accessToken.dataAccessExpirationTime,
+        }))
+        getFacebookUser()
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+    // LoginManager.logInWithPermissions(["public_profile"]).then(
+    //   function (result) {
+    //     if (result.isCancelled) {
+    //       console.log("Login cancelled");
+    //     } else {
+    //       Profile.getCurrentProfile().then(
+    //         function (currentProfile) {
+    //           if (currentProfile) {
+    //             console.log("The current logged user is: " +
+    //               currentProfile.name
+    //               + ". His profile id is: " +
+    //               currentProfile.userID
+    //             );
+    //             console.log(currentProfile)
+    //           }
+    //         }
+    //       )
+    //       AccessToken.getCurrentAccessToken().then(
+    //         (data) => {
+    //           console.log(data.accessToken.toString())
+    //         }
+    //       )
+    //       // console.log(
+    //       //   "Login success with permissions: " +
+    //       //   result.grantedPermissions.toString()
+    //       // );
+    //     }
+    //   },
+    //   function (error) {
+    //     console.log("Login fail with error: " + error);
+    //   }
+    // );
+  }
+
   const handleAuthorize = useCallback(
     async provider => {
       try {
@@ -125,6 +203,7 @@ const App = () => {
         })
 
       } catch (error) {
+        console.log(error)
         Alert.alert('Falha ao realizar o Login', error.message);
       }
     },
@@ -151,17 +230,16 @@ const App = () => {
 
   const handleRevoke = useCallback(async () => {
     try {
-      const config = configs[authState.provider];
-      await revoke(config, {
-        tokenToRevoke: authState.accessToken,
-        sendClientId: true
-      });
+      if (authState.provider == 'google') {
+        const config = configs[authState.provider];
+        await revoke(config, {
+          tokenToRevoke: authState.accessToken,
+          sendClientId: true
+        });
+      }
 
       setAuthState({
-        provider: '',
-        accessToken: '',
-        accessTokenExpirationDate: '',
-        refreshToken: ''
+        ...defaultAuthState,
       });
 
       setUserInfo({ ...defaultUserInfo })
@@ -196,6 +274,7 @@ const App = () => {
           <Text>{userInfo.userName}</Text>
           <Text>{userInfo.userEmail}</Text>
           <Text>{userInfo.userPicture}</Text>
+          <Text>{userInfo.userId}</Text>
         </View>
       ) : (
         <Text>{authState.hasLoggedInOnce ? 'Goodbye.' : 'Hello, stranger.'}</Text>
@@ -221,6 +300,12 @@ const App = () => {
               onPress={() => { handleAuthorize('google') }}
             >
               <Text style={{ color: 'white' }}>Google</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ backgroundColor: 'blue', padding: 10, alignItems: 'center', margin: 10 }}
+              onPress={() => { handleFacebookSignin() }}
+            >
+              <Text style={{ color: 'white' }}>Facebook</Text>
             </TouchableOpacity>
           </>
         ) : null}
@@ -269,40 +354,6 @@ const App = () => {
             }
           }
           onLogoutFinished={() => console.log("logout.")} /> */}
-        <TouchableOpacity
-          style={{ backgroundColor: 'blue', padding: 10, alignItems: 'center', margin: 10 }}
-          onPress={() => {
-            LoginManager.logInWithPermissions(["public_profile"]).then(
-              function (result) {
-                if (result.isCancelled) {
-                  console.log("Login cancelled");
-                } else {
-                  Profile.getCurrentProfile().then(
-                    function (currentProfile) {
-                      if (currentProfile) {
-                        console.log("The current logged user is: " +
-                          currentProfile.name
-                          + ". His profile id is: " +
-                          currentProfile.userID
-                        );
-                      }
-                    }
-                  );
-                  console.log(
-                    "Login success with permissions: " +
-                    result.grantedPermissions.toString()
-                  );
-                }
-              },
-              function (error) {
-                console.log("Login fail with error: " + error);
-              }
-            );
-
-          }}
-        >
-          <Text style={{ color: 'white' }}>Facebook</Text>
-        </TouchableOpacity>
       </View>
     </AuthContainer>
   );
