@@ -75,7 +75,7 @@ const config = {
 - At your React Native Project
 - Make sure you set up a Facebook app and updated the ```AndroidManifest.xml``` and ```strings.xml``` with Facebook app settings.
   - At ```android/app/src/main/AndroidManifest.xml```
-    - Add ```<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>``` under ```<activity>``` tag.
+    - Add ```<meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>``` after ```<activity>``` tag.
     - Make sure that you have the follow permission ```<uses-permission android:name="android.permission.INTERNET" />```.
   - At ```android/app/src/main/res/values/strings.xml```
     - Add ```<string name="facebook_app_id">FACEBOOK_APP_ID</string>```.
